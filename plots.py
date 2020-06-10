@@ -11,8 +11,6 @@ def plot_2d(reduced, y = None, s = 1, alpha = .2, show = True, no_legend = False
         plot_device.figure()
     if y is not None:
         s = plt.scatter(reduced[:, 0], reduced[:, 1], s = s, alpha = alpha, c = y)
-        # print(np.unique(y))
-        # print(Counter(y))
         if not no_legend:
             if y_names is None:
                 y_names = list(np.unique(y))
@@ -31,7 +29,6 @@ def plot_for_compare(embeddings, y = None, s = 1, alpha = .2, show = True):
 
     for i, embedding in enumerate(embeddings):
         axs[i].scatter(embedding[:, 0], embedding[:, 1], c = y, alpha = alpha, s = s)
-        # plot_2d(embedding, y, s = s, alpha = alpha, show = True, no_legend = True, plot_device = axs[i])
 
     fig.tight_layout()
 

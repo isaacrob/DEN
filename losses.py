@@ -1,10 +1,8 @@
 import torch
 
-import torch
-
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-# F21 approximation based off https://projecteuclid.org/download/pdf_1/euclid.aos/1031689021
+# 2F1 approximation based off https://projecteuclid.org/download/pdf_1/euclid.aos/1031689021
 
 def F21(a, b, c, x):
     y = y_hat(a, b, c, x)
@@ -17,7 +15,6 @@ def F21(a, b, c, x):
 
 
 def r21(a, b, c, x, y):
-    # y = y_hat(a, b, c, x)
     out = (y**2)/a
     out += ((1-y)**2)/(c-a)
     out -= ((b*x**2)*(y**2)*((1-y)**2))/(((1-x*y)**2)*a*(c-a))
@@ -43,16 +40,11 @@ def reg_betainc(x, a, b):
 def tcdf(t, v, device = device):
     t = t.to(device)
     v = v.to(device)
-    # t = torch.Tensor(t)
-    # v = torch.Tensor(t)
     x = v/(t**2+v)
     half = torch.Tensor([1/2]).to(device)
     i = reg_betainc(x, v/2, half)
 
     p = 1 - i/2
-    # where_neg = t < 0
-    # p[where_neg] = 1 - p[where_neg]
-    # p = 2*(p-.5)
 
     return p
 
@@ -78,8 +70,6 @@ def f_loss(x1, x2, y, ignore = .9, epsilon = 1e-4, device = device, min_p = 0):
 
     dist = torch.norm(x1 - x2, p = 2, dim = 1)**2
 
-    # get parameters for f distribution. not sure these are right..
-    # d1 = x1.shape[0] - v + 1
     d1 = torch.Tensor([1]).to(device)
     d2 = v
 
